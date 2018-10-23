@@ -4,6 +4,7 @@ package com.aaxis.microservice.training.demo1.service;
 import com.aaxis.microservice.training.demo1.dao.InventoryDAO;
 import com.aaxis.microservice.training.demo1.domain.Inventory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -17,7 +18,8 @@ public class InventoryService {
     public void initData(){
         mInventoryDAO.addItemInventory();
     }
-
+    
+    @Cacheable(value="inventory", key="#pProductId")
     public Inventory findInventoryById(String pProductId){
         Optional<Inventory> optionalInventory = mInventoryDAO.findById(pProductId);
         if(optionalInventory.isPresent()){
